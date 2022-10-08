@@ -102,8 +102,62 @@
     53503534226472524250874054075591789781264330331690  */
 
 using System.Reflection;
+using System.Diagnostics;
+Stopwatch sw = Stopwatch.StartNew();
 
-string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, @"..\..\..\number.txt");
+string AddStringNumbers(string num1, string num2)  // i.e. manual column addition
+{
+    string longer;
+    string shorter;
+    if (num1.Length > num2.Length)
+    {
+        longer = num1;
+        shorter = num2;
+    }
+    else
+    {
+        longer = num2;
+        shorter = num1;
+    }
+
+    string result = "";
+    int carry_over = 0;
+
+    int length_difference = longer.Length - shorter.Length;
+
+    for (int i = longer.Length - 1; i >= 0; i--)
+    {
+        string r1 = String.Empty;
+
+        if (i - length_difference >= 0)
+        {
+            r1 = (Int32.Parse(longer.Substring(i, 1)) + Int32.Parse(shorter.Substring(i - length_difference, 1)) + carry_over).ToString();
+        }
+        else
+        {
+            r1 = (Int32.Parse(longer.Substring(i, 1)) + carry_over).ToString();
+        }
+
+        if (r1.Length > 1)
+        {
+            carry_over = Int32.Parse(r1[0].ToString());
+            result = r1[1] + result;
+        }
+        else
+        {
+            carry_over = 0;
+            result = r1 + result;
+        }
+    }
+
+    if (carry_over > 0)
+    {
+        result = carry_over.ToString() + result;
+    }
+    return result;
+}
+
+string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, @"..\..\..\numbers.txt");
 string text = File.ReadAllText(path);
 
 List<string> numbers = new();
@@ -114,3 +168,15 @@ while ((line = r.ReadLine()!) is not null)
 {
     numbers.Add(line.Trim());
 }
+
+string sum = "0";
+foreach (string number in numbers)
+{
+    sum = AddStringNumbers(sum, number);
+}
+
+Console.WriteLine($"Total sum of all 100 50-digit numbers is {sum}.");
+Console.WriteLine($"The first ten digits of this sum are {sum.Substring(0,10)}.");
+
+sw.Stop();
+Console.WriteLine($"Elapsed time: {sw.Elapsed.TotalMilliseconds} ms");

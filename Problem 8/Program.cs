@@ -24,10 +24,12 @@
 //Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value of this product?
 
 using System.Diagnostics;
+using System.Reflection;
 
 Stopwatch sw = Stopwatch.StartNew();
 
-string number = File.ReadAllText(@"C:\Users\Jay\Desktop\Project Euler Problems\Problem 8\number.txt").Trim();
+string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, @"..\..\..\number.txt");
+string number = File.ReadAllText(path).Trim();
 
 bool StringProduct(string n, out long a)
 {

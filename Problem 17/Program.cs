@@ -39,11 +39,16 @@ Dictionary<string, int> numbers = new Dictionary<string, int>
     { "1000", 8 }
 };
 
-Console.WriteLine(numbers["one"]);
-
 long total_letters = 0;
 
 for (int i = 1; i <= 1000; i++)
 {
-    //if (i.ToString())
+    if (numbers.ContainsKey(i.ToString()))
+    {
+        if (i != 100 && i != 1000)
+        {
+            total_letters += numbers[i.ToString()];
+            continue;
+        }
+    }
 }

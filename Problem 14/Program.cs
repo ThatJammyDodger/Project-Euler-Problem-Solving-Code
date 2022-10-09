@@ -12,4 +12,34 @@
 
     NOTE: Once the chain starts the terms are allowed to go above one million.  */
 
-// bleughhhhhhhhhhh
+using System.Diagnostics;
+using System.Numerics;
+
+Stopwatch sw = Stopwatch.StartNew();
+
+int longest_chain = 0;
+int longest_chain_starter = 1;
+
+for (int i = 1; i <= 1000000; i++)
+{
+    BigInteger value = i;
+    int current_chain = 1;
+    while (value != 1)
+    {
+        if (value % 2 == 0)
+            value /= 2;
+        else
+            value = 1 + (value * 3);
+        current_chain++;
+    }
+    if (current_chain > longest_chain)
+    {
+        longest_chain = current_chain;
+        longest_chain_starter = i;
+    }
+}
+
+Console.WriteLine($"Longest chain = {longest_chain}.\nLongest chain starter = {longest_chain_starter}");
+
+sw.Stop();
+Console.WriteLine($"Elapsed time: {sw.Elapsed.TotalSeconds} seconds");

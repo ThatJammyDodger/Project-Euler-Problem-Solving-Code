@@ -7,9 +7,6 @@
 //  The use of "and" when writing out numbers is in compliance with British usage.
 
 using System.Diagnostics;
-using System.IO.Pipes;
-using System.Linq.Expressions;
-
 Stopwatch sw = Stopwatch.StartNew();
 
 Func<string, int> letters_in_num = (string x) => x.Replace(" ", "").Replace("-", "").Trim().Length;

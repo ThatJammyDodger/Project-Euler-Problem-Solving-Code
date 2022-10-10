@@ -6,49 +6,79 @@
 //  NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-two) contains 23 letters and 115 (one hundred and fifteen) contains 20 letters.
 //  The use of "and" when writing out numbers is in compliance with British usage.
 
-Dictionary<string, int> numbers = new Dictionary<string, int>
+using System.Diagnostics;
+using System.IO.Pipes;
+using System.Linq.Expressions;
+
+Stopwatch sw = Stopwatch.StartNew();
+
+Func<string, int> letters_in_num = (string x) => x.Replace(" ", "").Replace("-", "").Trim().Length;
+
+Dictionary<string, string> numbers = new Dictionary<string, string>
 {
-    { "1" , 3 },
-    { "2" , 3 },
-    { "3" , 5 },
-    { "4" , 4 },
-    { "5" , 4 },
-    { "6" , 3 },
-    { "7" , 5 },
-    { "8" , 5 },
-    { "9" , 4 },
-    { "10" , 3 },
-    { "11" , 6 },
-    { "12" , 6 },
-    { "13" , 8 },
-    { "14" , 8 },
-    { "15" , 7 },
-    { "16" , 7 },
-    { "17" , 9 },
-    { "18" , 8 },
-    { "19" , 8 },
-    { "20" , 6 },
-    { "30" , 6 },
-    { "40" , 5 },
-    { "50" , 5 },
-    { "60" , 5 },
-    { "70" , 7 },
-    { "80" , 6 },
-    { "90" , 6 },
-    { "100" , 7 }, // just "hundred", NOT "one-hundred"
-    { "1000", 8 }
+    { "1" , "one" },
+    { "2" , "two" },
+    { "3" , "three" },
+    { "4" , "four" },
+    { "5" , "five" },
+    { "6" , "six" },
+    { "7" , "seven" },
+    { "8" , "eight" },
+    { "9" , "nine" },
+    { "10" , "ten" },
+    { "11" , "eleven" },
+    { "12" , "twelve" },
+    { "13" , "thirteen" },
+    { "14" , "fourteen" },
+    { "15" , "fifteen" },
+    { "16" , "sixteen" },
+    { "17" , "seventeen" },
+    { "18" , "eighteen" },
+    { "19" , "nineteen" },
+    { "20" , "twenty" },
+    { "30" , "thirty" },
+    { "40" , "forty" },  // spelt as 'fourty' originally, to my own regret
+    { "50" , "fifty" },
+    { "60" , "sixty" },
+    { "70" , "seventy" },
+    { "80" , "eighty" },
+    { "90" , "ninety" }, // just "hundred", NOT "one-hundred"
+    { "1000", "one thousand" }  // this actually is 'one thousand' full
 };
 
-long total_letters = 0;
+string total_letters = "";
 
-for (int i = 1; i <= 1000; i++)
+for (int i = 21; i < 100; i++)
 {
-    if (numbers.ContainsKey(i.ToString()))
+    if (!numbers.ContainsKey(i.ToString()))
     {
-        if (i != 100 && i != 1000)
-        {
-            total_letters += numbers[i.ToString()];
-            continue;
-        }
+        string tens_digit_stuff = i.ToString()[0] + "0";
+
+        string i_in_letters = numbers[tens_digit_stuff] + "-" + numbers[i.ToString()[1].ToString()];
+
+        numbers.Add(i.ToString(), i_in_letters);
     }
 }
+
+for (int i = 100; i < 1000; i++)
+{
+    if (!numbers.ContainsKey(i.ToString()))
+    {
+        string hundreds_digit_stuff = numbers[i.ToString()[0].ToString()] + " hundred";
+        int without_hundreds_digit = i - (i/100)*100;
+
+        string i_in_letters = i%100!=0? hundreds_digit_stuff + " and " + numbers[without_hundreds_digit.ToString()] : hundreds_digit_stuff ;
+
+        numbers.Add(i.ToString(), i_in_letters);
+    }
+}
+
+foreach(KeyValuePair<string, string> pair in numbers.OrderBy(key => Int32.Parse(key.Key)))
+{
+    total_letters += pair.Value;
+}
+
+Console.WriteLine("There are {0} total letters here", letters_in_num(total_letters));
+
+sw.Stop();
+Console.WriteLine($"Elapsed time: {sw.Elapsed.TotalMilliseconds} ms");

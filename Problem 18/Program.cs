@@ -59,4 +59,4 @@ foreach(var number in numbers)
 }
 
 sw.Stop();
-Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);s);
+Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

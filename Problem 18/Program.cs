@@ -32,12 +32,31 @@ However, Problem 67, is the same challenge with a triangle containing one-hundre
 */
 
 using System.Diagnostics;
+using System.Reflection;
+
 Stopwatch sw = Stopwatch.StartNew();
 
+string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, @"..\..\..\numbers.txt");
+string text = File.ReadAllText(path);
+
+List<List<int>> numbers = new();
+
+using var r = new StringReader(text);
+string line;
+while ((line = r.ReadLine()!) is not null)
+{
+    numbers.Add(line.Split(" ").ToList().Select(int.Parse).ToList());
+}
 
 
-
-
+foreach(var number in numbers)
+{
+    foreach(var item in number)
+    {
+        Console.Write("{} ", item);
+    }
+    Console.WriteLine();
+}
 
 sw.Stop();
-Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);
+Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);s);

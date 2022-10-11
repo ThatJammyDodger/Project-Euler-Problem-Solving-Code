@@ -14,8 +14,6 @@
 using System.Diagnostics;
 Stopwatch sw = Stopwatch.StartNew();
 
-//var days_vs_dates = new Dictionary<DateTime, string>();
-
 int tally = 0;
 
 var add_date = new DateTime(1901, 1, 1);

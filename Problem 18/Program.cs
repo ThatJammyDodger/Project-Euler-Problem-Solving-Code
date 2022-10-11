@@ -1,6 +1,5 @@
 ﻿/*
- * 
- * By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.
+By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.
 
 3
 7 4
@@ -48,15 +47,33 @@ while ((line = r.ReadLine()!) is not null)
     numbers.Add(line.Split(" ").ToList().Select(int.Parse).ToList());
 }
 
+// Theorised method which works here checked is to check, from the current number, which path over the next two rows, out of all possibilities, gives the best addition to total.
 
-foreach(var number in numbers)
+int[] highest_next_row(int[] startIndex)
 {
-    foreach(var item in number)
-    {
-        Console.Write("{} ", item);
-    }
-    Console.WriteLine();
+	int next1 = numbers[startIndex[0]][startIndex[1]+1] ;
+	int next2 = numbers[startIndex[0] + 1][startIndex[1]+1];
+	int higher = next1 > next2 ? next1 : next2 ;
+	return new int[] { next1 > next2 ? startIndex[0] : startIndex[0]+1 , startIndex[1], higher };  // in format ( int[2] new_index, value_of_this )
 }
+
+int check_next_rows(int[] startIndex) // start index in form { i, j } so i = startIndex[0] & j=startIndex[1]
+{
+	int potential_sum_1 = 0;
+	int potential_sum_2 = 0;
+
+	int[] potential_sum_1_ind = new int[] { startIndex[0], startIndex[1]+1 };
+	int[] potential_sum_2_ind = new int[] { startIndex[0]+1, startIndex[1]+1 };
+
+    potential_sum_1 = numbers[potential_sum_1_ind[0]][potential_sum_1_ind[1]] + highest_next_row(potential_sum_1_ind)[2];
+    potential_sum_2 = numbers[potential_sum_2_ind[0]][potential_sum_2_ind[1]] + highest_next_row(potential_sum_2_ind)[2];
+
+	return potential_sum_1 > potential_sum_2 ? potential_sum_1 : potential_sum_2;
+}
+
+Console.WriteLine(numbers[1][1]);
+
+//Console.WriteLine(check_next_rows(new int[] { 0, 0 }));
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

@@ -51,29 +51,43 @@ while ((line = r.ReadLine()!) is not null)
 
 int[] highest_next_row(int[] startIndex)
 {
-	int next1 = numbers[startIndex[0]][startIndex[1]+1] ;
-	int next2 = numbers[startIndex[0] + 1][startIndex[1]+1];
+	int next1 = numbers[startIndex[0]+1][startIndex[1]];
+	int next2 = numbers[startIndex[0]+1][startIndex[1] + 1];
 	int higher = next1 > next2 ? next1 : next2 ;
-	return new int[] { next1 > next2 ? startIndex[0] : startIndex[0]+1 , startIndex[1], higher };  // in format ( int[2] new_index, value_of_this )
+	return new int[] { startIndex[0]+1, next1 > next2 ? startIndex[1] : startIndex[1]+1 , higher };  // in format ( int[2] new_index(j,i), value_of_this )
 }
 
-int check_next_rows(int[] startIndex) // start index in form { i, j } so i = startIndex[0] & j=startIndex[1]
+int[] check_next_rows(int[] startIndex) // start index in form { j, i } so j = startIndex[0] & i=startIndex[1] maybe idrk anymore
 {
 	int potential_sum_1 = 0;
 	int potential_sum_2 = 0;
 
-	int[] potential_sum_1_ind = new int[] { startIndex[0], startIndex[1]+1 };
-	int[] potential_sum_2_ind = new int[] { startIndex[0]+1, startIndex[1]+1 };
+	int[] potential_sum_1_ind = new int[] {  startIndex[1]+1, startIndex[0] };
+	int[] potential_sum_2_ind = new int[] {  startIndex[1]+1, startIndex[0] + 1 };
 
-    potential_sum_1 = numbers[potential_sum_1_ind[0]][potential_sum_1_ind[1]] + highest_next_row(potential_sum_1_ind)[2];
-    potential_sum_2 = numbers[potential_sum_2_ind[0]][potential_sum_2_ind[1]] + highest_next_row(potential_sum_2_ind)[2];
+	int[] hnr1 = highest_next_row(potential_sum_1_ind);
+	int[] hnr2 = highest_next_row(potential_sum_2_ind);
 
-	return potential_sum_1 > potential_sum_2 ? potential_sum_1 : potential_sum_2;
+    potential_sum_1 = numbers[potential_sum_1_ind[0]][potential_sum_1_ind[1]] + hnr1[2];
+    potential_sum_2 = numbers[potential_sum_2_ind[0]][potential_sum_2_ind[1]] + hnr2[2];
+
+	return new int[] { potential_sum_1 > potential_sum_2 ? potential_sum_1 : potential_sum_2,
+		potential_sum_1 > potential_sum_2 ? hnr1[0] : hnr2[0],
+		potential_sum_1 > potential_sum_2 ? hnr1[1] : hnr2[1] }; // { value, index of last part of sum (j,i) }
 }
 
-Console.WriteLine(numbers[1][1]);
+int sum = numbers[0][0];
+int[] newcoords = new int[] { 0, 0 };
+while (newcoords[1] < 14)
+{
+	var res = check_next_rows(newcoords);
+	sum += res[0];
+	newcoords = new int[] { res[2] , res[1] };
+}
 
-//Console.WriteLine(check_next_rows(new int[] { 0, 0 }));
+Console.WriteLine("Maximum possible total: {0}", sum);
+
+//CHECK_NEXT_ROWS STILL IN (I,J) FORM - all else use (j,i)
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

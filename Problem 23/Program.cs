@@ -75,9 +75,30 @@ for (int i = 1; i<=28123; i++)
         AbundantNumbers.Add(i);
 }
 
-Console.WriteLine(AbundantNumbers.Count);
+List<int> twoabsums = new();
+int tsum = 0;
+foreach (int number1 in AbundantNumbers)
+{
+    foreach (int number2 in AbundantNumbers)
+    {
+        tsum = number1 + number2;
+        if (tsum < 30000)
+            twoabsums.Add(tsum);
+    }
+}
+twoabsums = twoabsums.Distinct().ToList();
+twoabsums.Sort();
 
+int[] twoabsumsarr = twoabsums.ToArray();
 
+long finalsum = 0;
+for (int i = 1; i <= 28123; i++)
+{
+    if (Array.BinarySearch(twoabsumsarr, i) < 0)
+        finalsum += i;
+}
+
+Console.WriteLine("The sum of all the positive integers which cannot be written as the sum of two abundant numbers is {0}.", finalsum);
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

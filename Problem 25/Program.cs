@@ -20,12 +20,26 @@
     What is the index of the first term in the Fibonacci sequence to contain 1000 digits?  */
 
 using System.Diagnostics;
+using System.Numerics;
+
 Stopwatch sw = Stopwatch.StartNew();
 
+BigInteger x = 1, y = 1;
+int fibindex = 2;
 
+while (true)
+{
+    x = x + y;
+    fibindex ++;
+    if (x.ToString().Length == 1000) 
+        break;
+    y = x + y;
+    fibindex ++;
+    if (y.ToString().Length == 1000)
+        break;
+}
 
-
-
+Console.WriteLine("Index of firsth Fibonacci number with 1000 digits is {0}.", fibindex);
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

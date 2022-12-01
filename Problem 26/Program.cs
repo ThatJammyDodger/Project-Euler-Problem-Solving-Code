@@ -28,35 +28,37 @@ string recip_div(int n) // finds the string division result for 1/n
     {
         int current = rems[rems.Count - 1] * 10;
         result += (current / n).ToString();
-        int nrem = current - (current / n) * n;
+        int nrem = current - (current/n)*n;
         rems.Add(nrem);
-        for (int i = 0; i < rems.Count; i++)
+        for (int i = 0; i < rems.Count-1; i++)
         {
             if (rems[i] == rems[rems.Count - 1])
-                need_ind = rems.Count - i;
-            done = true;
-        }
-        if (rems[rems.Count - 1] == 0)
-            if (n < 10)
             {
+                need_ind = rems.Count - i;
                 done = true;
             }
-            else
-            {
-
-            }
+        }
+        if (rems[rems.Count - 1] == 0)
+        {
+            done = true;
+        }
     } while (!done);
-    return result.ToString();
+    return result;
 }
 
-for (int i = 2; i <= 100; i++)
+int longest_res_num = 0;
+int longest_res_len = 0;
+
+for (int i = 2; i < 1000; i++)
 {
-    Console.WriteLine(recip_div(i));
+    if (recip_div(i).Length > longest_res_len)
+    {
+        longest_res_num = i;
+        longest_res_len = recip_div(i).Length;
+    }
 }
 
-
-
-
+Console.WriteLine("The number below 1000 with the longest recurring cycle is {0} with a decimal length (without repeats) of {1}.",longest_res_num, longest_res_len);
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

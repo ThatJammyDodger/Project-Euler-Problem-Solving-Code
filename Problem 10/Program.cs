@@ -24,7 +24,7 @@ int[] GetPrimes(int n)  // gets the primes up to n
         }
         if (prime)
             primes.Add(counter);
-        counter++;
+        counter+=2;
     }
 
     return primes.ToArray();

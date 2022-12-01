@@ -69,20 +69,24 @@ int testing(int a, int b)
 }
 
 int max_so_far = 0;
+int a_for_maxsf = 0;
+int b_for_maxsf = 0;
 
 for (int a = -999; a < 1000; a++)
 {
-    foreach (int b in b_pot_values)
+    foreach (int b in b_pot_values)  // as mathematically, b must also be prime
     {
         var tempr = testing(a, b);
         if (tempr > max_so_far)
+        {
             max_so_far = tempr;
+            a_for_maxsf = a;
+            b_for_maxsf = b;
+        }
     }
-    if (a % 10 == 0)
-        Console.WriteLine(a);
 }
 
-Console.WriteLine(max_so_far);
+Console.WriteLine("Producing the longest prime chain length of {0}, a={1}, b={2}, ab={3}",max_so_far, a_for_maxsf, b_for_maxsf, a_for_maxsf*b_for_maxsf);
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

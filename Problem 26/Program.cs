@@ -60,6 +60,3 @@ for (int i = 2; i <= 100; i++)
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);
-
-sw.Stop();
-Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

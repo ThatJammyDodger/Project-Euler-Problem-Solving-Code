@@ -16,6 +16,8 @@ int factorial(int n)
     }
     return prod;
 }
+
+int sum = 0;
 int tot;
 
 for (int i = 3; i <= 2540160; i++)  // up to the maximum viable number based on value of 9!
@@ -26,8 +28,10 @@ for (int i = 3; i <= 2540160; i++)  // up to the maximum viable number based on 
         tot += factorial((int)Char.GetNumericValue(x));
     }
     if (tot == i)
-        Console.WriteLine(tot);
+        sum += tot;
 }
+
+Console.WriteLine("The sum of all numbers which are equal to the sum of the factorial of their digits is {0}", sum);
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

@@ -31,8 +31,51 @@ int[] GetPrimes(int n)  // gets the primes up to n
 }
 List<int> circular_primes = new();
 
-var arr = new List<int>(GetPrimes(1000000));
-Console.WriteLine(arr.Count);
+/*
+string[] GetPermutations(string input)  // recursion algorithm to get all permutations of a given string
+{
+    List<string> final = new();
+    if (input.Length == 0) return final.ToArray();  // basic input handling
+    if (input.Length == 1) final.Add(input);
+    if (input.Length > 1)
+    {
+        string part1 = input[0].ToString();  // removes the swapped out character and stores
+        string part2 = input.Substring(1);  // stores rest of string
+        var p2_pms = GetPermutations(part2);  // recursion bit
+        foreach (string x in p2_pms)  // loop adds all permutations of that recursion to the output list
+        {
+            for (int b = 0; b <= part2.Length; b++)
+            {
+                string permuted = x.Substring(0, b) + part1 + x.Substring(b);
+                final.Add(permuted);
+            }
+        }
+    }
+    return final.Distinct().ToArray();  // returns all distinct permutations
+}
+*/
+
+string[] GetRotations(string a)
+{
+    List<string> final = new();
+    for (int i = 0; i < a.Length; i++)
+    {
+        final.Add( a.Substring(i) + a.Substring(0, i) );
+    }
+    return final.ToArray();
+}
+
+/*var arr = new SortedSet<int>(GetPrimes(1000000));
+
+foreach(int i in arr)
+{
+    var tl = GetRotations(i.ToString());
+    foreach(var x in tl)
+    {
+        arr.Remove(Int32.Parse(x));
+    }
+}*/
+
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

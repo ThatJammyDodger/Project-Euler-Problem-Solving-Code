@@ -12,24 +12,81 @@ int[] GetPrimes(int n)  // gets the primes up to n
     List<int> primes = new() { 2 };
 
     int counter = 3;
+    int flsqrt;
     while (counter <= n)
     {
         bool prime = true;
-        foreach (var x in primes)
+        flsqrt = (int)Math.Sqrt(counter) + 1;
+        /*foreach (var x in primes)
         {
-            if (counter % x == 0)
+            if ((counter % x == 0) || x >= flsqrt)
+            {
+                prime = false;
+                break;
+            }
+        }*/
+        
+        for (int i = 2; i < (int)Math.Ceiling(Math.Sqrt(counter)); i++)
+        {
+            if (counter % i == 0)
             {
                 prime = false;
                 break;
             }
         }
+
         if (prime)
             primes.Add(counter);
         counter += 2;
     }
     return primes.ToArray();
 }
-List<int> circular_primes = new();
+
+SortedSet<int> circular_primes = new();
+
+string[] GetRotations(string a)
+{
+    List<string> final = new();
+    for (int i = 0; i < a.Length; i++)
+    {
+        final.Add( a.Substring(i) + a.Substring(0, i) );
+    }
+    return final.ToArray();
+}
+
+var arr = new SortedSet<int>(GetPrimes(1000000));
+
+foreach(int i in arr)
+{
+    var tl = GetRotations(i.ToString());
+    bool all = true;
+    foreach(var x in tl)
+    {
+        if (!arr.Contains(Int32.Parse(x)))
+        {
+            all = false;
+        }
+    }
+    if (all)
+    {
+        foreach (var x in tl)
+        {
+            circular_primes.Add(Int32.Parse(x));
+        }
+    }
+}
+
+Console.WriteLine("There are {0} circular primes below one million.",circular_primes.Count);
+
+sw.Stop();
+Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);
+
+foreach(var x in circular_primes)
+{
+    Console.WriteLine(x);
+}
+
+
 
 /*
 string[] GetPermutations(string input)  // recursion algorithm to get all permutations of a given string
@@ -54,28 +111,3 @@ string[] GetPermutations(string input)  // recursion algorithm to get all permut
     return final.Distinct().ToArray();  // returns all distinct permutations
 }
 */
-
-string[] GetRotations(string a)
-{
-    List<string> final = new();
-    for (int i = 0; i < a.Length; i++)
-    {
-        final.Add( a.Substring(i) + a.Substring(0, i) );
-    }
-    return final.ToArray();
-}
-
-/*var arr = new SortedSet<int>(GetPrimes(1000000));
-
-foreach(int i in arr)
-{
-    var tl = GetRotations(i.ToString());
-    foreach(var x in tl)
-    {
-        arr.Remove(Int32.Parse(x));
-    }
-}*/
-
-
-sw.Stop();
-Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

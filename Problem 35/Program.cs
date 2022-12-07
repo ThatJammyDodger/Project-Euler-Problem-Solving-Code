@@ -7,39 +7,33 @@
 using System.Diagnostics;
 Stopwatch sw = Stopwatch.StartNew();
 
-int[] GetPrimes(int n)  // gets the primes up to n
+int[] GetPrimes(int upperLimit)  // gets the primes up to limit
 {
-    List<int> primes = new() { 2 };
-
-    int counter = 3;
-    int flsqrt;
-    while (counter <= n)
+    int sieveBound = (int)(upperLimit - 1) / 2;
+    int upperSqrt = ((int)Math.Sqrt(upperLimit) - 1) / 2;
+    List<int> numbers = new List<int>((int)(upperLimit / (Math.Log(upperLimit) - 1.08366)));
+    bool[] PrimeBits = new bool[sieveBound + 1];
+    numbers.Add(2);
+    for (int i = 1; i <= upperSqrt; i++)
     {
-        bool prime = true;
-        flsqrt = (int)Math.Sqrt(counter) + 1;
-        /*foreach (var x in primes)
+        if (!PrimeBits[i])
         {
-            if ((counter % x == 0) || x >= flsqrt)
+            int inc = 2 * i + 1;
+            for (int j = i * 2 * (i + 1); j <= sieveBound; j += inc)
             {
-                prime = false;
-                break;
+                PrimeBits[j] = true;
             }
-        }*/
-        
-        for (int i = 2; i < (int)Math.Ceiling(Math.Sqrt(counter)); i++)
-        {
-            if (counter % i == 0)
-            {
-                prime = false;
-                break;
-            }
+            numbers.Add(inc);
         }
-
-        if (prime)
-            primes.Add(counter);
-        counter += 2;
     }
-    return primes.ToArray();
+    for (int i = upperSqrt + 1; i <= sieveBound; i++)
+    {
+        if (!PrimeBits[i])
+        {
+            numbers.Add(2 * i + 1);
+        }
+    }
+    return numbers.ToArray();
 }
 
 SortedSet<int> circular_primes = new();
@@ -80,11 +74,6 @@ Console.WriteLine("There are {0} circular primes below one million.",circular_pr
 
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);
-
-foreach(var x in circular_primes)
-{
-    Console.WriteLine(x);
-}
 
 
 

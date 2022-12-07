@@ -9,5 +9,10 @@ Stopwatch sw = Stopwatch.StartNew();
 
 
 
+bool CheckPalindrome(string input)
+{
+    
+}
+
 sw.Stop();
 Console.WriteLine("Elapsed time: {0} ms", sw.Elapsed.TotalMilliseconds);

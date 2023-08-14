@@ -16,11 +16,11 @@ bool isPandigital(int num)
 {
     if (!(num.ToString().Length == 9))
         return false;
-    else if (!(num.ToString().Contains("0")))
+    else if (num.ToString().Contains('0'))
         return false;
+    List<char> nums = new();
     foreach (char x in num.ToString())
     {
-        List<char> nums = new();
         if (!nums.Contains(x))
             nums.Add(x);
         else
@@ -29,10 +29,14 @@ bool isPandigital(int num)
     return true;
 }
 
-Console.WriteLine(isPandigital(123456789));
-Console.WriteLine(isPandigital(123987654));
-Console.WriteLine(isPandigital(12349));
-Console.WriteLine(isPandigital(123456788));
-Console.WriteLine(isPandigital(1234567890));
-Console.WriteLine(isPandigital(1234567899));
-Console.WriteLine(isPandigital(918273645));
+int j = 0;
+
+for (int i = 100000000; i < 1000000000; i++)
+{
+    if (isPandigital(i))
+    {
+        j++;
+    }
+}
+
+Console.WriteLine(j.ToString());
